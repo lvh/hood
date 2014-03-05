@@ -57,13 +57,13 @@
     (let [new-allocs (one-pass-alloc rem-apps rem-budget false)]
       (if (empty? new-allocs)
         [allocs rem-apps rem-budget]
-        (recur [(difference rem-apps (set (keys new-allocs)))
-                (- budget (apply + (values new-allocs)))
-                (into allocs new-allocs)])))))
+        (recur (difference rem-apps (set (keys new-allocs)))
+               (- budget (apply + (vals new-allocs)))
+               (into allocs new-allocs))))))
 
 (defn needs-alloc?
   [app]
-  (contains? #{:reviewed :requesting-more} (:state application)))
+  (contains? #{:reviewed :requesting-more} (:state app)))
 
 (defn alloc
   "Allocates funds.
@@ -71,7 +71,7 @@
   First does iter-alloc, then best-effort on the remaining ones.
   "
   [applications budget]
-  (let [pool (set (filter needs-allocation? applications))
+  (let [pool (set (filter needs-alloc? applications))
         [allocs rem-apps rem-budget] (iter-alloc pool budget)
         best-effort-allocs (one-pass-alloc rem-apps rem-budget true)]
     (into allocs best-effort-allocs)))
