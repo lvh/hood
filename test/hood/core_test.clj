@@ -7,3 +7,11 @@
     (is (= (score* {}) 0)))
   (testing "a student"
     (is (= (score* {:student :true}) 5))))
+
+(deftest needs-alloc?-test
+  (testing "is reviewed"
+    (is (needs-alloc? {:state :reviewed})))
+  (testing "is requesting more"
+    (is (needs-alloc? {:state :requesting-more})))
+  (testing "is something else"
+    (is (not (needs-alloc? {:state :something-else})))))
