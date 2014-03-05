@@ -4,9 +4,9 @@
 
 (deftest score-test
   (testing "scores don't fail on empty apps"
-    (is (= (score* {}) 0)))
+    (is (= (score* {}) 1)))
   (testing "a student"
-    (is (= (score* {:student :true}) 5))))
+    (is (= (score* {:student :true}) 6))))
 
 (deftest needs-alloc?-test
   (testing "is reviewed"

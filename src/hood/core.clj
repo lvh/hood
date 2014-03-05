@@ -2,7 +2,8 @@
   (:require [clojure.set :refer [difference]]))
 
 (def score-funcs
-  [[5 (fn [a] (if (:student a) 1 0))]])
+  [[1 (constantly 1)]
+   [5 (fn [a] (if (:student a) 1 0))]])
 
 (defn score*
   "Computes the score of an allocation."
