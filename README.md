@@ -2,6 +2,8 @@
 
 A Clojure library for financial aid allocations.
 
+![hood logo](https://dl.dropboxusercontent.com/u/38476311/Logos/hood.png)
+
 ## License
 
 Copyright © 2014 the authors (see AUTHORS)
