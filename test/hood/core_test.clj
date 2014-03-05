@@ -17,6 +17,16 @@
     (is (not (needs-alloc? {:state :something-else})))))
 
 (deftest one-pass-alloc-tests
-  (testing "one app, requests > budget, not accepting less"
+  (testing "one app, requests < offer"
+    (let [app {:requested-grant 100}]
+      (is (= (one-pass-alloc [app] 200 true)
+             {app 100}))
+      (is (= (one-pass-alloc [app] 200 false)
+             {app 100}))))
+  (testing "one app, requests > offer, not accepting less"
     (is (= (one-pass-alloc [{:requested-grant 100}] 1 false)
-           {}))))
+           {})))
+  (testing "one app, requests > offer, accepting less"
+    (is (let [app {:requested-grant 100}]
+          (= (one-pass-alloc [app] 1 true)
+             {app 1})))))
