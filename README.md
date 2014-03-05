@@ -1,10 +1,6 @@
 # hood
 
-A Clojure library
-
-## Usage
-
-FIXME
+A Clojure library for financial aid allocations.
 
 ## License
 
