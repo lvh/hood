@@ -58,7 +58,7 @@
       (if (empty? new-allocs)
         [allocs rem-apps rem-budget]
         (recur (difference rem-apps (set (keys new-allocs)))
-               (- budget (apply + (vals new-allocs)))
+               (- rem-budget (apply + (vals new-allocs)))
                (into allocs new-allocs))))))
 
 (defn needs-alloc?
