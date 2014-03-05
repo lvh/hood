@@ -15,3 +15,8 @@
     (is (needs-alloc? {:state :requesting-more})))
   (testing "is something else"
     (is (not (needs-alloc? {:state :something-else})))))
+
+(deftest one-pass-alloc-tests
+  (testing "one app, requests > budget, not accepting less"
+    (is (= (one-pass-alloc [{:requested-grant 100}] 1 false)
+           {}))))

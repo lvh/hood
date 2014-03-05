@@ -12,7 +12,8 @@
             (+ acc (* w (f a))))
           0 score-funcs))
 
-(def score (memoize score))
+(def score
+  (memoize score*))
 
 (defn one-pass-alloc
   "Allocates funds to all people that are requesting less than their
