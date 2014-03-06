@@ -1,19 +1,6 @@
 (ns hood.core
-  (:require [clojure.set :refer [difference]]))
-
-(def score-funcs
-  [[1 (constantly 1)]
-   [5 (fn [a] (if (:student a) 1 0))]])
-
-(defn score*
-  "Computes the score of an allocation."
-  [a]
-  (reduce (fn [acc [w f]]
-            (+ acc (* w (f a))))
-          0 score-funcs))
-
-(def score
-  (memoize score*))
+  (:require [clojure.set :refer [difference]]
+            [hood.score :refer [score]]))
 
 (defn one-pass-alloc
   "Allocates funds to all people that are requesting less than their
