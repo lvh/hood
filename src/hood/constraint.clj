@@ -24,7 +24,7 @@
         constraints (conj grant-constraints within-budget)]
     (solution constraints :maximize target)))
 
-(defn ^:private soln-to-map
+(defn ^:private soln-to-alloc-map
   [soln]
   (into {} (for [[[tag application] grant] soln] [application grant])))
 
@@ -35,7 +35,7 @@
   budget is the total budget.
   target is the term to optimize.
   "
-  (comp soln-to-map solve))
+  (comp soln-to-alloc-map solve))
 
 (defn ^:private $expt
   [x n]
