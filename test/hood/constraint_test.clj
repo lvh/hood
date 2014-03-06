@@ -42,4 +42,14 @@
     (is (= (alloc applications 300 (linear-target applications :score))
            {alice 120
             bob 100
+            carol 80})))
+  (testing "quadratic allocation on restricted budget"
+    (is (= (alloc applications 200 (quadratic-target applications :score))
+           {alice 120
+            bob 0 ;; bob gets penalized vs linear: incomplete grant!
+            carol 80})))
+  (testing "quadratic allocation on complete budget"
+    (is (= (alloc applications 300 (quadratic-target applications :score))
+           {alice 120
+            bob 100
             carol 80}))))
