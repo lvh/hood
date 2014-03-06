@@ -2,10 +2,10 @@
   (:require [hood.constraint :refer :all]
             [clojure.test :refer :all]))
 
-(def applications
-  [{:name "Alice", :score 5, :requested 120}
-   {:name "Bob", :score 4, :requested 100}
-   {:name "Carol", :score 3, :requested 80}])
+(def alice {:name "Alice", :score 5, :requested 120})
+(def bob {:name "Bob", :score 4, :requested 100})
+(def carol {:name "Carol", :score 3, :requested 80})
+(def applications [alice bob carol])
 
 ;; Keep in mind that most applications won't actually have a score
 ;; attribute. In this case, we're doing it so that the scoring
@@ -23,7 +23,7 @@
    (let [subtargets (:args target)]
      (and
       (= (set (map :type subtargets)) #{:*})
-      (= (map :arg1 subtargets) [[:allocation 0] [:allocation 1] [:allocation 2]])
+      (= (map :arg1 subtargets) (#'hood.constraint/alloc-vars applications))
       (= (set (map (comp type :arg2) subtargets)) #{Long})))))
 
 (deftest target-tests
@@ -31,6 +31,13 @@
     (is (sane-target? (linear-target applications :score)))))
 
 (deftest alloc-tests
-  (testing "linear allocation of test applications"
+  (testing "linear allocation on restricted budget"
     (is (= (alloc applications 200 (linear-target applications :score))
-           {}))))
+           {alice 120
+            bob 80
+            carol 0})))
+  (testing "linear allocation on complete budget"
+    (is (= (alloc applications 300 (linear-target applications :score))
+           {alice 120
+            bob 100
+            carol 80}))))
