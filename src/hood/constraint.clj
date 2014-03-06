@@ -9,17 +9,11 @@
   [apps]
   (for [a apps] [:allocation a]))
 
-(defn grant-constraint
-  "An application will get between zero and the requested amount of
-  dollars."
-  [app]
-  ($in [:allocation app] 0 (:requested app)))
-
 (defn ^:private solve
   "Throw the constraint problem into loco."
   [apps budget target]
   (let [allocs (alloc-vars apps)
-        grant-constraints (map grant-constraint apps)
+        grant-constraints (map #($in [:allocation %] 0 (:requested %)) apps)
         within-budget ($<= (apply $+ allocs) budget)
         constraints (conj grant-constraints within-budget)]
     (solution constraints :maximize target)))
