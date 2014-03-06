@@ -15,10 +15,10 @@
         budget-slice (/ budget total-score)
         offer (fn [app]
                 (min
-                 (:requested-grant app)
+                 (:requested app)
                  (* (score app) budget-slice)))]
     (reduce (fn [allocs app]
-              (if (or accept-less (== (:requested-grant app) (offer app)))
+              (if (or accept-less (== (:requested app) (offer app)))
                 (assoc allocs app (offer app))
                 allocs))
             {} applications)))

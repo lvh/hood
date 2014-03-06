@@ -12,15 +12,15 @@
 
 (deftest one-pass-alloc-tests
   (testing "one app, requests < offer"
-    (let [app {:requested-grant 100}]
+    (let [app {:requested 100}]
       (is (= (one-pass-alloc [app] 200 true)
              {app 100}))
       (is (= (one-pass-alloc [app] 200 false)
              {app 100}))))
   (testing "one app, requests > offer, not accepting less"
-    (is (= (one-pass-alloc [{:requested-grant 100}] 1 false)
+    (is (= (one-pass-alloc [{:requested 100}] 1 false)
            {})))
   (testing "one app, requests > offer, accepting less"
-    (is (let [app {:requested-grant 100}]
+    (is (let [app {:requested 100}]
           (= (one-pass-alloc [app] 1 true)
              {app 1})))))
