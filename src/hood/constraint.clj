@@ -42,7 +42,7 @@
   (reduce $* (repeat n x)))
 
 (defn poly-target
-  "A target function of the shape:
+  "A polynomial target function of the shape:
 
   sum of si * (ai/ri)^n
 
