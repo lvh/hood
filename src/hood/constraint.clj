@@ -1,5 +1,6 @@
 (ns hood.constraint
   [:require
+   [clojure.math.numeric-tower :refer [expt]]
    [loco.core :refer [solution]]
    [loco.constraints :refer :all]])
 
@@ -36,10 +37,31 @@
   "
   (comp soln-to-map solve))
 
-(defn linear-target
-  [apps score]
-  (let [ratios (map #(/ (score %) (:requested %)) apps)
+(defn ^:private $expt
+  [x n]
+  (reduce $* (repeat n x)))
+
+(defn poly-target
+  "A target function of the shape:
+
+  sum of si * (ai/ri)^n
+
+  ... where si, ai and ri are an applications score, allocated amount
+  and requested amount, respectively.
+
+  Making n bigger weights towards giving fewer, larger grants. Making
+  n smaller weights towards more, smaller grants. Suggested values for
+  n are 1 (linear; estimated probability of attending is the fraction
+  of requested amount received) and 2 (quadratic; estimated
+  probability of attending is the square of the fraction of the
+  requested amount received).
+  "
+  [n apps score]
+  (let [ratios (map #(/ (score %) (expt (:requested %) n)) apps)
         scale (/ 100 (- (apply max ratios) (apply min ratios)))
         scaled-ratios (vec (map #(long (* scale %)) ratios))
-        scaled-allocs (map $* (alloc-vars apps) scaled-ratios)]
+        expd-allocs (map #($expt % n) (alloc-vars apps))
+        scaled-allocs (map $* expd-allocs scaled-ratios)]
     (apply $+ scaled-allocs)))
+
+(def linear-target (partial poly-target 1))
