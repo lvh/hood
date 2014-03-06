@@ -4,15 +4,10 @@
    [loco.core :refer [solution]]
    [loco.constraints :refer :all]])
 
-(defn ^:private alloc-vars
-  "The allocation constraint variables for a seq of applications."
-  [apps]
-  (for [a apps] [:allocation a]))
-
 (defn ^:private solve
   "Throw the constraint problem into loco."
   [apps budget target]
-  (let [allocs (alloc-vars apps)
+  (let [allocs (for [a apps] [:allocation a])
         grant-constraints (map #($in [:allocation %] 0 (:requested %)) apps)
         within-budget ($<= (apply $+ allocs) budget)
         constraints (conj grant-constraints within-budget)]
@@ -54,7 +49,7 @@
   (let [ratios (map #(/ (score %) (expt (:requested %) n)) apps)
         scale (/ 100 (- (apply max ratios) (apply min ratios)))
         scaled-ratios (vec (map #(long (* scale %)) ratios))
-        expd-allocs (map #($expt % n) (alloc-vars apps))
+        expd-allocs (for [a apps] ($expt [:allocation a] n))
         scaled-allocs (map $* expd-allocs scaled-ratios)]
     (apply $+ scaled-allocs)))
 
