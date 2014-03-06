@@ -13,18 +13,16 @@
         constraints (conj grant-constraints within-budget)]
     (solution constraints :maximize target)))
 
-(defn ^:private soln-to-alloc-map
-  [soln]
-  (into {} (for [[[tag application] grant] soln] [application grant])))
-
-(def alloc
+(defn alloc
   "Allocates using a constraint solver.
 
   apps is a seq of all applications.
   budget is the total budget.
   target is the term to optimize.
   "
-  (comp soln-to-alloc-map solve))
+  [apps budget target]
+  (let [soln (solve apps budget target)]
+    (into {} (for [[[tag application] grant] soln] [application grant]))))
 
 (defn ^:private $expt
   [x n]
