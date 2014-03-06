@@ -27,8 +27,10 @@
       (= (set (map (comp type :arg2) subtargets)) #{Long})))))
 
 (deftest target-tests
-  (testing "linear target produces k * var constraints"
-    (is (sane-target? (linear-target applications :score)))))
+  (testing "linear target is sane"
+    (is (sane-target? (linear-target applications :score))))
+  (testing "quadratic target is sane"
+    (is (sane-target? (quadratic-target applications :score)))))
 
 (deftest alloc-tests
   (testing "linear allocation on restricted budget"

@@ -65,3 +65,4 @@
     (apply $+ scaled-allocs)))
 
 (def linear-target (partial poly-target 1))
+(def quadratic-target (partial poly-target 2))
