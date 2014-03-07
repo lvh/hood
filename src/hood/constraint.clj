@@ -9,7 +9,7 @@
   [apps budget target]
   (let [allocs (for [a apps] [:allocation a])
         grant-constraints (map #($in [:allocation %] 0 (:requested %)) apps)
-        within-budget ($<= (apply $+ allocs) budget)
+        within-budget ($= (apply $+ allocs) budget)
         constraints (conj grant-constraints within-budget)]
     (solution constraints :maximize target)))
 
