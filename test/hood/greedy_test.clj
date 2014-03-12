@@ -1,6 +1,6 @@
 (ns hood.core-test
   (:require [clojure.test :refer :all]
-            [hood.core :refer :all]))
+            [hood.greedy :refer :all]))
 
 (deftest needs-alloc?-test
   (testing "is reviewed"

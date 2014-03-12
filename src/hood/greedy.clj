@@ -1,4 +1,4 @@
-(ns hood.core
+(ns hood.greedy
   (:require [clojure.set :refer [difference]]
             [hood.score :refer [score]]))
 
